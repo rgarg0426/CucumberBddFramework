@@ -1,13 +1,11 @@
 package stepDefinitions;
 
-import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -15,25 +13,28 @@ import org.testng.Assert;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.github.bonigarcia.wdm.WebDriverManager;
+import utils.CommonMethods;
 
 public class firstProgram {
-	WebDriver driver;
-	WebDriverWait wait;
+	WebDriver driver=Hooks.getDriver();
+    WebDriverWait wait=Hooks.getWait();
+    CommonMethods cm=new CommonMethods();
+	
 	@Given("User opens the Yatra application")
 	public void user_opens_the_yatra_application() {
-		WebDriverManager.chromedriver().setup();
-		driver=new ChromeDriver();
-		driver.manage().window().maximize();
-		driver.manage().deleteAllCookies();
-		driver.get("https://www.yatra.com/");
-		 wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+		System.out.print("Browser opened");
 
 		}
 	
 	@When("User enters {string} in the departure field")
 	public void user_enters_in_the_departure_field(String string) {
-	    
+		
+		if(cm.popupDisplay()==true)
+		{
+			cm.popupHandle();
+		}
+		
+		
 		driver.findElement(By.xpath("//div[@class='MuiBox-root css-1ek1ggs' and contains(@aria-label,'Departure')]//p[2]"))
 		.click();
 		
@@ -72,6 +73,11 @@ public class firstProgram {
 	
 	@When("User enters {string} in the destination field")
 	public void user_enters_in_the_destination_field(String string) {
+		
+		if(cm.popupDisplay()==true)
+		{
+			cm.popupHandle();
+		}
 	   
 		driver.findElement(By.xpath("//p[contains(text(),'Going')]//following-sibling::p[1]")).click();
 		WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#input-with-icon-adornment")));
