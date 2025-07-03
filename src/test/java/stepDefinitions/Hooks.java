@@ -14,16 +14,24 @@ public class Hooks {
 
 	public static WebDriver driver;
 	public static WebDriverWait wait;
-	@Before
+	@Before(order=0)
 	public void setUp() {
         WebDriverManager.chromedriver().setup();
         driver=new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
-        driver.get("https://www.yatra.com/");
-        wait=new WebDriverWait(driver,Duration.ofSeconds(5));
         
+       
     }
+	
+	 @Before(order=1)
+     public void launchBrowser()
+     {
+     driver.get("https://www.yatra.com/");
+     wait=new WebDriverWait(driver,Duration.ofSeconds(5));
+     }
+	 
+	 
 	
 	@After
 	public void tearDown()
